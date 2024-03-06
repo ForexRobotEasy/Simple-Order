@@ -1,0 +1,162 @@
+
+//+------------------------------------------------------------------+
+//|                                              Simple Order.mq5    |
+//|                        Copyright 2021, Forex Robot Easy Team      |
+//|                                      https://www.forexroboteasy.com|
+//+------------------------------------------------------------------+
+//|                                                                  |
+//|            Simple Order Forex Software Code Development           |
+//|                                                                  |
+//|  This code enables traders to place pending orders quickly and    |
+//|  efficiently in the Forex market. It provides a user-friendly     |
+//|  interface for order placement, modification, and adjustment of   |
+//|  stop loss and take profit levels.                                |
+//|                                                                  |
+//+------------------------------------------------------------------+
+
+//+------------------------------------------------------------------+
+//|               Global variables and constants                      |
+//+------------------------------------------------------------------+
+input double StopLoss = 50.0; // Default stop loss size
+input double TakeProfit = 100.0; // Default take profit size
+
+//+------------------------------------------------------------------+
+//|                     Initialization function                      |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Initialize pending order panel
+   InitPanel();
+   
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//|                Deinitialization function                          |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // Deinitialize pending order panel
+   DeinitPanel();
+}
+
+//+------------------------------------------------------------------+
+//|                Panel initialization function                     |
+//+------------------------------------------------------------------+
+void InitPanel()
+{
+   // Create a panel object
+   CPanel panel;
+   
+   // Set panel properties
+   panel.SetPosition(10, 10);
+   panel.SetSize(200, 150);
+   
+   // Add buttons for order names
+   panel.AddButton('Buy', PANEL_BUTTON_BUY);
+   panel.AddButton('Sell', PANEL_BUTTON_SELL);
+   
+   // Display the panel
+   panel.Display();
+}
+
+//+------------------------------------------------------------------+
+//|               Panel deinitialization function                     |
+//+------------------------------------------------------------------+
+void DeinitPanel()
+{
+   // Remove the panel from the chart
+   CPanel panel;
+   panel.Remove();
+}
+
+//+------------------------------------------------------------------+
+//|              Handling double-click event function                 |
+//+------------------------------------------------------------------+
+void OnChartEvent(const int id, const long &lparam, const double &dparam, const string &sparam)
+{
+   // Check if the double-click event occurred
+   if (id == CHARTEVENT_OBJECT_DOUBLECLICK)
+   {
+      // Get the object name that was double-clicked
+      string objectName = ObjectsGetObjectName(lparam);
+      
+      // Check if the object is a price level
+      if (StringFind(objectName, 'PriceLevel') != -1)
+      {
+         // Get the price level value
+         double price = ObjectGetDouble(0, objectName, OBJPROP_PRICE);
+         
+         // Prompt the user to confirm order placement
+         int result = MessageBox('Do you want to place a pending order at ' + DoubleToString(price, _Digits) + '?', 'Confirm Order Placement', MB_YESNO);
+         
+         // Check if the user confirmed the order placement
+         if (result == IDYES)
+         {
+            // Get the button clicked on the panel
+            int buttonClicked = GetButtonClicked();
+            
+            // Check the button clicked and place the corresponding pending order
+            if (buttonClicked == PANEL_BUTTON_BUY)
+            {
+               PlacePendingOrder(OP_BUYSTOP, price);
+            }
+            else if (buttonClicked == PANEL_BUTTON_SELL)
+            {
+               PlacePendingOrder(OP_SELLSTOP, price);
+            }
+         }
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//|                Get the button clicked on the panel                |
+//+------------------------------------------------------------------+
+int GetButtonClicked()
+{
+   // Replace with actual implementation to get the button clicked
+   return PANEL_BUTTON_BUY;
+}
+
+//+------------------------------------------------------------------+
+//|                 Place a pending order at a price                  |
+//+------------------------------------------------------------------+
+void PlacePendingOrder(const int type, const double price)
+{
+   // Replace with actual implementation to place the pending order
+   // using the specified order type and price
+}
+
+//+------------------------------------------------------------------+
+//|               Adjust the size of stop loss and take profit        |
+//+------------------------------------------------------------------+
+void AdjustStopLossTakeProfit(const double stopLoss, const double takeProfit)
+{
+   // Replace with actual implementation to adjust the stop loss and take profit levels
+}
+
+//+------------------------------------------------------------------+
+//|                     The main program function                     |
+//+------------------------------------------------------------------+
+void OnStart()
+{
+   // Main program loop
+   while (!IsStopped())
+   {
+      // Check for user input or other events
+      CheckEvents();
+      
+      // Perform other trading activities
+      // ...
+   }
+}
+
+//+------------------------------------------------------------------+
+//|                    Check for user input/events                    |
+//+------------------------------------------------------------------+
+void CheckEvents()
+{
+   // Replace with actual implementation to check for user input or other events
+}
+
